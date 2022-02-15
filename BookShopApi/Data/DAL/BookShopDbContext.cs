@@ -1,4 +1,5 @@
-﻿using BookShopApi.Data.Entities;
+﻿using BookShopApi.Data.Configuration;
+using BookShopApi.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,15 @@ namespace BookShopApi.Data.DAL
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Genre> Genres { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new BookConfiguration());
+            modelBuilder.ApplyConfiguration(new AuthorConfiguration());
+            modelBuilder.ApplyConfiguration(new GenreConfiguration());
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }

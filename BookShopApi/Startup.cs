@@ -1,3 +1,5 @@
+using BookShopApi.Apps.AdminApi.DTOs;
+using BookShopApi.Apps.AdminApi.Profiles;
 using BookShopApi.Data.DAL;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,17 +31,16 @@ namespace BookShopApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductPostDto>());
+            services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AuthorPostDto>());
             services.AddDbContext<BookShopDbContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            //services.AddAutoMapper(option =>
-            //{
-            //    option.AddProfile(new MapProfile());
-            //    option.AddProfile(new UserApiProfile());
+            services.AddAutoMapper(option =>
+            {
+                option.AddProfile(new MapProfile());
 
-            //});
+            });
             //services.AddIdentity<AppUser, IdentityRole>(opt =>
             //{
             //    opt.Password.RequireNonAlphanumeric = false;
@@ -52,15 +53,15 @@ namespace BookShopApi
             //    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             //    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             //})
-                //.AddJwtBearer(cfg =>
-                //{
-                //    cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                //    {
-                //        ValidIssuer = "https://localhost:44397/",
-                //        ValidAudience = "https://localhost:44397/",
-                //        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("5ea9a95c-95c4-4f6e-b5be-1f04965f28da"))
-                //    };
-                //});
+            //.AddJwtBearer(cfg =>
+            //{
+            //    cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            //    {
+            //        ValidIssuer = "https://localhost:44397/",
+            //        ValidAudience = "https://localhost:44397/",
+            //        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("5ea9a95c-95c4-4f6e-b5be-1f04965f28da"))
+            //    };
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,13 +70,13 @@ namespace BookShopApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+            }   
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

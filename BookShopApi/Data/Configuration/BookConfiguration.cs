@@ -14,6 +14,7 @@ namespace BookShopApi.Data.Configuration
         {
             builder.Property(b => b.Name).HasMaxLength(70).IsRequired(true);
             builder.Property(b => b.Language).HasMaxLength(50).IsRequired(true);
+            builder.Property(b => b.Image).HasMaxLength(150).IsRequired(false);
             builder.Property(x => x.SalePrice).IsRequired(true).HasColumnType("decimal(18,2)");
             builder.Property(x => x.CostPrice).IsRequired(true).HasColumnType("decimal(18,2)");
             builder.Property(b => b.DisplayStatus).HasDefaultValue(true);

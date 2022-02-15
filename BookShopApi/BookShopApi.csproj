@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Apps\AdminApi\Controllers\" />
-    <Folder Include="Apps\AdminApi\DTOs\" />
+    <Folder Include="wwwroot\assets\uploads\image\" />
   </ItemGroup>
 
 

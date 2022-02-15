@@ -17,5 +17,7 @@ namespace BookShopApi.Data.Configuration
             builder.Property(b => b.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(b => b.ModifiedAt).HasDefaultValueSql("GETUTCDATE()");
         }
+
+
     }
 }
