@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace BookShopApi.Apps.AdminApi.Controllers
 {
+    [ApiExplorerSettings(GroupName = "admin_v1")]
     [Route("admin/api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
@@ -47,7 +48,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
                 AuthorId = bookDto.AuthorId
             };
             
-            book.Image = bookDto.Image.SaveImg(_env.WebRootPath, "assets/uploads/image");
+            book.Image = bookDto.ImageFile.SaveImg(_env.WebRootPath, "assets/uploads/image");
 
             _context.Books.Add(book);
             _context.SaveChanges();
@@ -74,6 +75,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
             {
                 Items = query.Select(p => new BookListItemDto
                 {
+                    Id=p.Id,
                     Name = p.Name,
                     Language=p.Language,
                     PageCount=p.PageCount,
@@ -113,7 +115,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
                 return StatusCode(409);
 
             Helpers.Helper.DeleteImg(_env.WebRootPath, "assets/uploads/image", existBook.Image);
-            existBook.Image = bookDto.Image.SaveImg(_env.WebRootPath, "assets/uploads/image");
+            existBook.Image = bookDto.ImageFile.SaveImg(_env.WebRootPath, "assets/uploads/image");
             existBook.CostPrice = bookDto.CostPrice;
             existBook.SalePrice = bookDto.SalePrice;
             existBook.Name = bookDto.Name;
@@ -133,6 +135,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
             if (book == null) return NotFound();
 
             book.IsDeleted = true;
+            _context.SaveChanges();
             return NoContent();
         }
 

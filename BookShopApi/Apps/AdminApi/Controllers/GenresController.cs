@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace BookShopApi.Apps.AdminApi.Controllers
 {
+    [ApiExplorerSettings(GroupName = "admin_v1")]
     [Route("admin/api/[controller]")]
     [ApiController]
     public class GenresController : ControllerBase
@@ -55,6 +56,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
             return Ok(genreGetDto);
         }
 
+        [HttpGet]
         public IActionResult GetAll()
         {
             var query = _context.Genres.Where(a => !a.IsDeleted);
@@ -92,7 +94,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
                 return NotFound();
 
             genre.IsDeleted = true;
-
+            _context.SaveChanges();
             return NoContent();
         }
     }

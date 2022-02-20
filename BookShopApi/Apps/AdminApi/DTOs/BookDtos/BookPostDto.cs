@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using BookShopApi.Extensions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace BookShopApi.Apps.AdminApi.DTOs.BookDtos
         public bool DisplayStatus { get; set; }
         public decimal CostPrice { get; set; }
         public decimal SalePrice { get; set; }
-        public IFormFile Image { get; set; }
+        public IFormFile ImageFile { get; set; }
         public int PageCount { get; set; }
         public string Language { get; set; }
         public int GenreId { get; set; }
@@ -36,7 +37,7 @@ namespace BookShopApi.Apps.AdminApi.DTOs.BookDtos
                 .GreaterThanOrEqualTo(0).WithMessage("SalePrice can not be less than 0")
                 .NotEmpty().WithMessage("SalePrice mecburidir!");
 
-            RuleFor(x => x.DisplayStatus).NotEmpty().WithMessage("DisplayStatus is required!");
+            RuleFor(x => x.DisplayStatus).NotNull().WithMessage("DisplayStatus is required!");
 
             RuleFor(x => x).Custom((x, context) =>
             {
@@ -45,6 +46,21 @@ namespace BookShopApi.Apps.AdminApi.DTOs.BookDtos
             });
             RuleFor(x => x.Language).MaximumLength(50).WithMessage("Name field can not be longer than 50 characters!").NotEmpty().WithMessage("Can not be empty");
             RuleFor(x => x.PageCount).NotEmpty().WithMessage("Can not be empty");
+            RuleFor(x => x.ImageFile).Custom((x, content) =>
+            {
+                if (x == null)
+                {
+                    content.AddFailure("ImageFile", "Image can not be null");
+                }
+                else if (!x.IsImage())
+                {
+                    content.AddFailure("ImageFile", "Please insert a valid image type such as jpg,png,jpeg etc");
+                }
+                else if (!x.IsSizeOkay(2))
+                {
+                    content.AddFailure("ImageFile", "Image size can not be more than 2MB");
+                }
+            });
         }
     }
 }

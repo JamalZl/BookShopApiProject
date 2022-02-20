@@ -1,0 +1,45 @@
+﻿@model AuthorListDto
+@{
+    ViewData["Title"] = "Index";
+    int count = 0;
+}
+
+<div class="mt-2 d-flex" style="justify-content:flex-end">
+    <a asp-controller="author" asp-action="create" class="btn btn-success btn-icon-text">
+        <i class="mdi mdi-upload btn-icon-prepend"></i>
+        Create
+    </a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td><a asp-controller="author" asp-action="delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a></td>
+                            <td><a asp-controller="author" asp-action="update" asp-route-id="@item.Id" class="btn btn-warning">Update</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+

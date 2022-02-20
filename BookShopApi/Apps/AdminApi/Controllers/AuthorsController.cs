@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace BookShopApi.Apps.AdminApi.Controllers
 {
+    [ApiExplorerSettings(GroupName = "admin_v1")]
     [Route("admin/api/[controller]")]
     [ApiController]
     public class AuthorsController : ControllerBase
@@ -22,7 +23,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
-        public AuthorsController(BookShopDbContext context,IWebHostEnvironment env,IMapper mapper)
+        public AuthorsController(BookShopDbContext context, IWebHostEnvironment env, IMapper mapper)
         {
             _context = context;
             _env = env;
@@ -30,7 +31,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Create([FromForm]AuthorPostDto authorDto)
+        public IActionResult Create([FromForm] AuthorPostDto authorDto)
         {
             if (_context.Authors.Any(a => a.Name.ToLower().Trim() == authorDto.Name.ToLower().Trim()))
                 return StatusCode(409);
@@ -40,7 +41,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
             {
                 Name = authorDto.Name
             };
-            author.Image = authorDto.Image.SaveImg(_env.WebRootPath, "assets/uploads/image");
+            author.Image = authorDto.ImageFile.SaveImg(_env.WebRootPath, "assets/uploads/image");
             _context.Authors.Add(author);
             _context.SaveChanges();
             return StatusCode(201, author);
@@ -80,7 +81,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
                 return NotFound();
 
             Helpers.Helper.DeleteImg(_env.WebRootPath, "assets/uploads/image", author.Image);
-            author.Image = authorDto.Image.SaveImg(_env.WebRootPath, "assets/uploads/image");
+            author.Image = authorDto.ImageFile.SaveImg(_env.WebRootPath, "assets/uploads/image");
             if (_context.Authors.Any(a => a.Id != id && a.Name.ToLower().Trim() == authorDto.Name.ToLower().Trim()))
                 return StatusCode(409);
             author.Name = authorDto.Name;
@@ -99,6 +100,7 @@ namespace BookShopApi.Apps.AdminApi.Controllers
                 return NotFound();
 
             author.IsDeleted = true;
+            _context.SaveChanges();
 
             return NoContent();
         }

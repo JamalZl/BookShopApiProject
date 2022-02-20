@@ -21,6 +21,8 @@ namespace BookShopApi.Data.Configuration
             builder.Property(b => b.PageCount).IsRequired(true);
             builder.Property(b => b.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(b => b.ModifiedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.HasOne(x => x.Author).WithMany(x => x.Books).OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(x => x.Genre).WithMany(x => x.Books).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

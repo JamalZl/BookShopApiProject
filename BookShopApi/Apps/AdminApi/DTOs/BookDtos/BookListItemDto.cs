@@ -7,6 +7,7 @@ namespace BookShopApi.Apps.AdminApi.DTOs.BookDtos
 {
     public class BookListItemDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool DisplayStatus { get; set; }
         public decimal CostPrice { get; set; }
